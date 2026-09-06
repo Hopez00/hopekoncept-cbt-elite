@@ -135,7 +135,7 @@
                 let data = await res.json();
                 if (data.success) {
                     alert('Login successful! Redirecting to exam center...');
-                    window.location.href = '/exam.html';
+                    window.location.href = '/dashboard.html';
                 } else {
                     alert(data.message || 'Invalid email or password.');
                 }
