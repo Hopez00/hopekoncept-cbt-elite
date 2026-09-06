@@ -1,7 +1,17 @@
+const nodemailer = require('nodemailer');
 const express = require('express');
 const path = require('path');
 const app = express();
 const PORT = 3000;
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER || "your-email@gmail.com",
+    pass: process.env.EMAIL_PASS || "your-app-password"
+  }
+});
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -30,7 +40,20 @@ app.post('/api/register', (req, res) => {
     console.log(`[REGISTRATION OTP] Code for ${email}: ${otp}`);
     console.log("========================================");
 
-    res.json({ success: true, otp: otp, message: 'OTP generated successfully' });
+    
+  try {
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER || "your-email@gmail.com",
+      to: email,
+      subject: "Hopekoncept CBT Elite - Verification Code",
+      text: "Your verification code is: " + otp
+    });
+    res.json({ success: true, message: "Verification code sent to your email inbox!" });
+  } catch (err) {
+    console.error("Mail error:", err);
+    res.status(500).json({ success: false, message: "Failed to send email." });
+  }
+
 });
 
 // Verify OTP Route
