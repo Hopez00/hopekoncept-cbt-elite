@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Official Curriculum & Syllabus Guide - JAMB & WAEC</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #0f172a; color: #333; padding: 20px; }
+        .wrapper { max-width: 950px; margin: 20px auto; background: white; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); overflow: hidden; }
+        .header { background: #1e293b; color: white; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #ffcc00; }
+        .header h2 { font-size: 20px; color: #ffcc00; }
+        .content { padding: 30px; }
+        
+        .tab-buttons { display: flex; gap: 10px; margin-bottom: 25px; }
+        .tab-btn { flex: 1; padding: 12px; background: #e2e8f0; border: none; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 14px; color: #334155; }
+        .tab-btn.active { background: #1a237e; color: white; }
+
+        .syllabus-section { display: none; }
+        .syllabus-section.active { display: block; }
+        
+        h3 { color: #1a237e; margin-bottom: 12px; font-size: 18px; }
+        p { font-size: 14px; color: #475569; line-height: 1.6; margin-bottom: 15px; }
+        
+        .subject-syllabus-box { background: #f8fafc; border: 1px solid #cbd5e1; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+        .subject-syllabus-box h4 { color: #0f172a; font-size: 15px; margin-bottom: 6px; }
+        .subject-syllabus-box ul { margin-left: 20px; font-size: 13px; color: #334155; line-height: 1.6; }
+        
+        .btn-back { display: inline-block; padding: 10px 20px; background: #64748b; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 13px; margin-top: 20px; }
+        .btn-back:hover { background: #475569; }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <h2>Official Examination Curriculum & Syllabus Portal</h2>
+            <button class="tab-btn" style="width: auto; padding: 6px 12px; background: #334155; color: white;" onclick="window.location.href='/dashboard.html'">Back to Dashboard</button>
+        </div>
+        
+        <div class="content">
+            <div class="tab-buttons">
+                <button class="tab-btn active" id="btn-jamb" onclick="switchTab('JAMB')">JAMB UTME Brochure & Careers</button>
+                <button class="tab-btn" id="btn-waec" onclick="switchTab('WAEC')">WAEC Complete Subject Syllabi</button>
+            </div>
+
+            <div class="syllabus-section active" id="jamb-section">
+                <h3>JAMB UTME 2026 Guidelines & Subject Combinations for All Careers</h3>
+                <p>The Joint Admissions and Matriculation Board requires every candidate to choose 4 subjects corresponding to their chosen course of study across Engineering, Medicine, Sciences, Law, Arts, Social Sciences, and Commercial disciplines.</p>
+                
+                <div class="subject-syllabus-box">
+                    <h4>Engineering & Technology</h4>
+                    <ul>
+                        <li><strong>Compulsory:</strong> Use of English, Mathematics, Physics, Chemistry.</li>
+                        <li><strong>Target Careers:</strong> Civil Engineering, Mechanical, Electrical, Computer Engineering, Architecture.</li>
+                    </ul>
+                </div>
+                <div class="subject-syllabus-box">
+                    <h4>Medical & Health Sciences</h4>
+                    <ul>
+                        <li><strong>Compulsory:</strong> Use of English, Biology, Chemistry, Physics or Mathematics.</li>
+                        <li><strong>Target Careers:</strong> Medicine & Surgery, Pharmacy, Nursing Science, Medical Laboratory Science.</li>
+                    </ul>
+                </div>
+                <div class="subject-syllabus-box">
+                    <h4>Arts, Law & Humanities</h4>
+                    <ul>
+                        <li><strong>Compulsory:</strong> Use of English, Literature-in-English, Government, CRS or History.</li>
+                        <li><strong>Target Careers:</strong> Law, Mass Communication, Linguistics, International Relations, Theatre Arts.</li>
+                    </ul>
+                </div>
+                <div class="subject-syllabus-box">
+                    <h4>Commercial & Social Sciences</h4>
+                    <ul>
+                        <li><strong>Compulsory:</strong> Use of English, Mathematics, Economics, and either Commerce, Accounting or Government.</li>
+                        <li><strong>Target Careers:</strong> Accounting, Banking & Finance, Business Administration, Economics, Marketing.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="syllabus-section" id="waec-section">
+                <h3>WAEC Senior School Certificate Examination (SSCE) Complete Syllabi</h3>
+                <p>Comprehensive West African syllabus covering all senior secondary school subjects tested in objective (Paper 1), theory (Paper 2), and practicals (Paper 3).</p>
+                
+                <div class="subject-syllabus-box">
+                    <h4>Mathematics Syllabus</h4>
+                    <ul>
+                        <li>Number and numeration, algebraic processes, geometry, mensuration, trigonometry, statistics, and probability.</li>
+                    </ul>
+                </div>
+                <div class="subject-syllabus-box">
+                    <h4>English Language Syllabus</h4>
+                    <ul>
+                        <li>Comprehension, summary, vocabulary, grammar (lexis and structure), continuous writing, and oral English.</li>
+                    </ul>
+                </div>
+                <div class="subject-syllabus-box">
+                    <h4>Physics Syllabus</h4>
+                    <ul>
+                        <li>Mechanics, thermal physics, waves, optics, electricity, magnetism, atomic and nuclear physics.</li>
+                    </ul>
+                </div>
+                <div class="subject-syllabus-box">
+                    <h4>Chemistry Syllabus</h4>
+                    <ul>
+                        <li>Matter, atomic structure, periodic table, chemical bonding, stoichiometry, acids/bases/salts, organic chemistry.</li>
+                    </ul>
+                </div>
+                <div class="subject-syllabus-box">
+                    <h4>Biology Syllabus</h4>
+                    <ul>
+                        <li>Living organisms, cell structure, plant and animal physiology, ecology, heredity, variation, and evolution.</li>
+                    </ul>
+                </div>
+                <div class="subject-syllabus-box">
+                    <h4>Economics Syllabus</h4>
+                    <ul>
+                        <li>Basic economic concepts, consumer behavior, theory of demand and supply, market structures, national income, public finance, international trade.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <a href="/dashboard.html" class="btn-back">← Return to Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const examParam = urlParams.get('exam');
+        if (examParam === 'WAEC') {
+            switchTab('WAEC');
+        }
+
+        function switchTab(type) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.syllabus-section').forEach(s => s.classList.remove('active'));
+
+            if (type === 'JAMB') {
+                document.getElementById('btn-jamb').classList.add('active');
+                document.getElementById('jamb-section').classList.add('active');
+            } else {
+                document.getElementById('btn-waec').classList.add('active');
+                document.getElementById('waec-section').classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
+

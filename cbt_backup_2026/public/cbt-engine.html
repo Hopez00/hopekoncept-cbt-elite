@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JAMB/WAEC Tutorial CBT - Examination Engine</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: #333;
+            padding: 20px;
+        }
+        .header { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.95); padding: 15px 25px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .logo { font-size: 20px; font-weight: bold; color: #1a237e; }
+        .logo span { color: #f2a900; }
+        .timer { background: #d9534f; color: white; padding: 8px 15px; border-radius: 4px; font-weight: bold; font-size: 16px; }
+        .main-container { display: flex; margin-top: 20px; gap: 20px; flex-wrap: wrap; }
+        .question-card { background: rgba(255,255,255,0.95); flex: 3; min-width: 300px; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .sidebar { background: rgba(255,255,255,0.95); flex: 1; min-width: 220px; padding: 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); text-align: center; }
+        .subject-select { width: 100%; padding: 8px; margin-bottom: 15px; border-radius: 4px; border: 1px solid #ccc; font-weight: bold; }
+        .options label { display: block; background: #f1f3f5; padding: 12px; margin: 10px 0; border-radius: 6px; cursor: pointer; transition: 0.2s; color: #333; }
+        .options label:hover { background: #e2e6ea; }
+        .btn-group { margin-top: 20px; display: flex; justify-content: space-between; }
+        button { padding: 10px 20px; background: #1a237e; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        button:hover { opacity: 0.9; }
+        .footer { text-align: center; font-size: 13px; color: #ccc; margin-top: 20px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo" id="examTitleHeader">JAMB/WAEC CBT Engine</div>
+        <div>Candidate: <b>Verified Student</b></div>
+        <div class="timer" id="timer">01:59:59</div>
+    </div>
+
+    <div class="main-container">
+        <div class="question-card">
+            <h3 id="qHeading">Question 1 of 40</h3>
+            <p id="questionText">Loading examination question module...</p>
+            <div class="options" id="optionsContainer">
+                <!-- Dynamic Options -->
+            </div>
+            <div class="btn-group">
+                <button onclick="prevQuestion()">Previous</button>
+                <button onclick="nextQuestion()">Next Question</button>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <h4>Select Subject</h4>
+            <select class="subject-select" id="subjectDropdown" onchange="changeSubject()">
+                <option value="english">Use of English</option>
+                <option value="mathematics">Mathematics</option>
+                <option value="physics">Physics</option>
+                <option value="chemistry">Chemistry</option>
+                <option value="biology">Biology</option>
+                <option value="government">Government</option>
+                <option value="economics">Economics</option>
+                <option value="literature">Literature in English</option>
+                <option value="accounting">Financial Accounting</option>
+                <option value="commerce">Commerce</option>
+            </select>
+            <hr>
+            <button style="background: #28a745; width: 100%; margin-top: 20px;" onclick="alert('Exam submitted successfully! Score records updated.')">Submit Exam</button>
+            <br><br>
+            <a href="/" style="color: #1a237e; text-decoration: none; font-weight: bold; font-size: 13px;">&larr; Exit to Main Menu</a>
+        </div>
+    </div>
+
+    <div class="footer">Developed by Hopekoncept and designs</div>
+
+    <script>
+        // Detect if exam mode is JAMB or WAEC from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const examType = urlParams.get('exam') || 'jamb';
+        document.getElementById('examTitleHeader').innerText = `${examType.toUpperCase()} Tutorial CBT Engine`;
+
+        // Sample Question Database covering multiple subjects
+        const questionsDB = {
+            english: { q: "Choose the word nearest in meaning to the capitalized word: His OMNIPOTENT nature was praised.", opts: ["A. All-powerful", "B. Merciful", "C. Omniscient", "D. Generous"], ans: 0 },
+            mathematics: { q: "Find the derivative of y = 3x^2 + 5x - 2 with respect to x.", opts: ["A. 6x + 5", "B. 3x + 5", "C. 6x - 2", "D. x^2 + 5"], ans: 0 },
+            physics: { q: "Which of the following instruments is used to measure relative humidity?", opts: ["A. Barometer", "B. Hydrometer", "C. Hygrometer", "D. Manometer"], ans: 2 },
+            chemistry: { q: "Which element is a noble gas with a complete outer shell?", opts: ["A. Sodium", "B. Chlorine", "C. Argon", "D. Oxygen"], ans: 2 },
+            biology: { q: "The powerhouse of the cell where cellular respiration occurs is the:", opts: ["A. Nucleus", "B. Mitochondrion", "C. Ribosome", "D. Chloroplast"], ans: 1 },
+            government: { q: "A system of government where power is shared between a central government and federating units is:", opts: ["A. Unitary", "B. Federal", "C. Confederal", "D. Autocratic"], ans: 1 },
+            economics: { q: "Inflation caused by an increase in aggregate demand is known as:", opts: ["A. Cost-push inflation", "B. Demand-pull inflation", "C. Structural inflation", "D. Imported inflation"], ans: 1 },
+            literature: { q: "A dramatic work that ends in catastrophe or great misfortune for the main character is a:", opts: ["A. Comedy", "B. Tragedy", "C. Melodrama", "D. Farce"], ans: 1 },
+            accounting: { q: "The book of original entry where credit transactions are primarily recorded is the:", opts: ["A. Cash Book", "B. Sales Journal", "C. General Ledger", "D. Trial Balance"], ans: 1 },
+            commerce: { q: "The trade that takes place within the boundaries of a country is called:", opts: ["A. International trade", "B. Home trade", "C. Entrepot trade", "D. Multilateral trade"], ans: 1 }
+        };
+
+        let currentSubj = 'english';
+        let currentQIndex = 1;
+
+        function loadQuestion() {
+            const data = questionsDB[currentSubj];
+            document.getElementById('questionText').innerText = data.q;
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+            data.opts.forEach((opt, idx) => {
+                container.innerHTML += `<label><input type="radio" name="examOpt" value="${idx}"> ${opt}</label>`;
+            });
+            document.getElementById('qHeading').innerText = `${currentSubj.toUpperCase()} - Question ${currentQIndex} of 40`;
+        }
+
+        function changeSubject() {
+            currentSubj = document.getElementById('subjectDropdown').value;
+            loadQuestion();
+        }
+
+        function nextQuestion() {
+            currentQIndex = currentQIndex < 40 ? currentQIndex + 1 : 40;
+            loadQuestion();
+        }
+
+        function prevQuestion() {
+            currentQIndex = currentQIndex > 1 ? currentQIndex - 1 : 1;
+            loadQuestion();
+        }
+
+        // Countdown timer simulation
+        let time = 7200;
+        setInterval(() => {
+            let hours = Math.floor(time / 3600);
+            let minutes = Math.floor((time % 3600) / 60);
+            let seconds = time % 60;
+            document.getElementById('timer').innerText = 
+                `${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+            if(time > 0) time--;
+        }, 1000);
+
+        // Initialize first view
+        loadQuestion();
+    </script>
+</body>
+</html>

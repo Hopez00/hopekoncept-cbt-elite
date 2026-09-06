@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Candidate Profile - JAMB/WAEC Tutorial CBT</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        header { background: rgba(26, 35, 126, 0.9); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 22px; font-weight: bold; }
+        .logo span { color: #f2a900; }
+        .container { max-width: 600px; margin: 40px auto; background: rgba(255,255,255,0.95); color: #333; padding: 40px; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+        h2 { color: #1a237e; margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .profile-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0; font-size: 15px; }
+        .label { font-weight: bold; color: #555; }
+        .value { color: #222; }
+        .btn-back { display: inline-block; margin-top: 25px; padding: 10px 20px; background: #1a237e; color: #fff; text-decoration: none; border-radius: 5px; font-weight: bold; }
+        footer { background: rgba(0, 0, 0, 0.8); text-align: center; padding: 15px; font-size: 13px; color: #aaa; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">JAMB/WAEC <span>TUTORIAL CBT</span></div>
+        <a href="/" style="color:#fff; text-decoration:none;">Dashboard</a>
+    </header>
+
+    <div class="container">
+        <h2>Candidate Profile Details</h2>
+        <div class="profile-row">
+            <span class="label">Full Status:</span>
+            <span class="value">Verified Candidate</span>
+        </div>
+        <div class="profile-row">
+            <span class="label">Account Email:</span>
+            <span class="value" id="userEmail">Loading...</span>
+        </div>
+        <div class="profile-row">
+            <span class="label">Portal Access Mode:</span>
+            <span class="value">Unlimited Practice (JAMB & WAEC)</span>
+        </div>
+        <div class="profile-row">
+            <span class="label">Account Security:</span>
+            <span class="value" style="color: green; font-weight: bold;">Protected & Verified</span>
+        </div>
+        <a href="/" class="btn-back">&larr; Back to Examination Portal</a>
+    </div>
+
+    <footer>Developed by Hopekoncept and designs</footer>
+
+    <script>
+        // Simple placeholder for session email retrieval
+        const savedEmail = localStorage.getItem('cbt_user_email') || 'candidate@tutorial.com';
+        document.getElementById('userEmail').innerText = savedEmail;
+    </script>
+</body>
+</html>

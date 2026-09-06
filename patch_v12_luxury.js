@@ -1,0 +1,256 @@
+const fs = require('fs');
+
+const luxurySignupHTML = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Candidate Registration - CBT Portal</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated Background Slideshow */
+        .bg-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            z-index: -2;
+            animation: kenburns 24s infinite;
+        }
+        .bg-slide:nth-child(1) {
+            background-image: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80');
+            animation-delay: 0s;
+        }
+        .bg-slide:nth-child(2) {
+            background-image: url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80');
+            animation-delay: 8s;
+        }
+        .bg-slide:nth-child(3) {
+            background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80');
+            animation-delay: 16s;
+        }
+
+        @keyframes kenburns {
+            0% { opacity: 0; transform: scale(1); }
+            8% { opacity: 1; }
+            33% { opacity: 1; transform: scale(1.08); }
+            41% { opacity: 0; transform: scale(1.1); }
+            100% { opacity: 0; }
+        }
+
+        /* Dark Frosted Overlay */
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.85));
+            z-index: -1;
+        }
+
+        /* Luxury Glassmorphism Card */
+        .signup-card {
+            background: rgba(30, 41, 59, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 16px;
+            padding: 28px;
+            width: 100%;
+            max-width: 380px;
+            box-sizing: border-box;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            color: #f8fafc;
+            text-align: center;
+        }
+
+        /* Expensive Glowing Logo */
+        .brand-logo-container {
+            margin-bottom: 15px;
+        }
+        .logo-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #0284c7, #38bdf8);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 8px;
+            animation: pulseGlow 3s infinite alternate;
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 10px rgba(56, 189, 248, 0.4); }
+            100% { box-shadow: 0 0 25px rgba(56, 189, 248, 0.9); }
+        }
+        .brand-title {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #38bdf8;
+            text-transform: uppercase;
+        }
+        .brand-subtitle {
+            font-size: 10px;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+        }
+
+        /* Form Inputs & Buttons */
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 14px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(100, 116, 139, 0.6);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 13px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        input:focus {
+            outline: none;
+            border-color: #38bdf8;
+            box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+        }
+        .btn {
+            width: 100%;
+            background: linear-gradient(135deg, #0284c7, #0369a1);
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
+            transition: transform 0.2s, background 0.2s;
+        }
+        .btn:hover {
+            background: linear-gradient(135deg, #0369a1, #075985);
+            transform: translateY(-1px);
+        }
+        .footer-link {
+            margin-top: 15px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .footer-link a {
+            color: #38bdf8;
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background Pictures -->
+    <div class="bg-slide"></div>
+    <div class="bg-slide"></div>
+    <div class="bg-slide"></div>
+    <div class="overlay"></div>
+
+    <div class="signup-card">
+        <div class="brand-logo-container">
+            <div class="logo-badge">HK</div>
+            <div class="brand-title">Hopekoncept CBT Elite</div>
+            <div class="brand-subtitle">Official Institutional Examination Gateway</div>
+        </div>
+
+        <div id="reg-step-1">
+            <input type="text" id="s-name" placeholder="Full Name (e.g. Hope Robert)">
+            <input type="email" id="s-email" placeholder="Email Address">
+            <input type="password" id="s-pass" placeholder="Create Secure Password">
+            <button class="btn" onclick="submitRegistration()">Register & Initialize OTP</button>
+        </div>
+
+        <div id="reg-step-2" style="display:none; text-align:center;">
+            <p style="font-size: 12px; color: #cbd5e1; margin-bottom: 15px;">Enter the 6-digit verification code generated for your session.</p>
+            <input type="text" id="s-otp" placeholder="••••••" style="text-align:center; letter-spacing: 6px; font-size: 18px; font-weight: bold;">
+            <button class="btn" onclick="verifyOTPCode()">Verify & Launch Portal</button>
+        </div>
+
+        <div class="footer-link">
+            Already registered? <a href="/login.html">Sign In</a>
+        </div>
+    </div>
+
+    <script>
+        async function submitRegistration() {
+            let name = document.getElementById('s-name').value;
+            let email = document.getElementById('s-email').value;
+            let pass = document.getElementById('s-pass').value;
+
+            if (!name || !email || !pass) {
+                alert('Please fill in all required registration fields.');
+                return;
+            }
+
+            try {
+                let res = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, pass })
+                });
+                let data = await res.json();
+                if (data.success) {
+                    alert('Verification Code Generated: ' + data.otp);
+                    document.getElementById('reg-step-1').style.display = 'none';
+                    document.getElementById('reg-step-2').style.display = 'block';
+                } else {
+                    alert('Registration failed.');
+                }
+            } catch (e) {
+                alert('Server connection error.');
+            }
+        }
+
+        async function verifyOTPCode() {
+            let otp = document.getElementById('s-otp').value;
+            if (!otp) {
+                alert('Please enter your verification code.');
+                return;
+            }
+
+            try {
+                let res = await fetch('/api/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ otp })
+                });
+                let data = await res.json();
+                if (data.success) {
+                    alert('Authentication verified successfully! Redirecting to login...');
+                    window.location.href = '/login.html';
+                } else {
+                    alert('Invalid verification code.');
+                }
+            } catch (e) {
+                alert('Verification error.');
+            }
+        }
+    </script>
+</body>
+</html>
+`;
+
+fs.writeFileSync('public/signup.html', luxurySignupHTML);
+console.log("Version 12 Luxury Animated Signup Page Patched Successfully!");

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Official CBT Examination Center</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #0f172a; padding: 15px; color: #333; }
+        .exam-wrapper { max-width: 900px; margin: 10px auto; background: white; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); overflow: hidden; }
+        
+        .exam-header { background: #1e293b; color: white; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #f59e0b; flex-wrap: wrap; gap: 10px; }
+        .exam-header h2 { font-size: 18px; color: #f8fafc; display: flex; align-items: center; gap: 8px; }
+        .header-controls { display: flex; gap: 10px; align-items: center; }
+        .timer-badge { background: #dc2626; color: white; padding: 6px 12px; border-radius: 6px; font-weight: bold; font-size: 14px; }
+        .calc-btn { background: #3b82f6; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px; }
+        .calc-btn:hover { background: #2563eb; }
+
+        #setup-view { padding: 30px; text-align: center; }
+        #setup-view h2 { color: #1e293b; margin-bottom: 8px; }
+        
+        .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 15px 0; text-align: left; max-height: 260px; overflow-y: auto; padding: 5px; border: 1px solid #e2e8f0; border-radius: 8px; background: #f8fafc; }
+        .subject-card { background: white; border: 1px solid #cbd5e1; padding: 10px; border-radius: 6px; cursor: pointer; font-size: 13px; display: flex; align-items: center; }
+        .subject-card input { margin-right: 10px; transform: scale(1.1); }
+
+        #quiz-view { display: none; padding: 25px; }
+        .exam-top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .question-meta { font-size: 12px; color: #64748b; font-weight: bold; text-transform: uppercase; }
+        .flag-btn { background: #f59e0b; color: white; border: none; padding: 4px 10px; border-radius: 4px; font-size: 12px; cursor: pointer; font-weight: bold; }
+        
+        .question-text { font-size: 17px; color: #0f172a; font-weight: 600; margin-bottom: 20px; line-height: 1.5; }
+        
+        .options-container { list-style: none; padding: 0; }
+        .options-container li { margin-bottom: 10px; }
+        .options-container label { display: flex; align-items: center; padding: 12px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; font-size: 14px; }
+        .options-container label:hover { background: #f1f5f9; border-color: #cbd5e1; }
+        .options-container input { margin-right: 12px; transform: scale(1.1); }
+
+        .footer-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 25px; border-top: 1px solid #e2e8f0; padding-top: 15px; }
+        .btn { padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px; }
+        .btn:hover { background: #1d4ed8; }
+        .btn-submit { background: #16a34a; }
+        .btn-submit:hover { background: #15803d; }
+
+        /* Scientific Calculator Modal */
+        #calc-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #1e293b; padding: 20px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 2000; width: 280px; border: 2px solid #38bdf8; }
+        #calc-screen { width: 100%; height: 45px; background: #0f172a; color: #38bdf8; font-size: 20px; text-align: right; padding: 5px 10px; margin-bottom: 12px; border: 1px solid #334155; border-radius: 4px; }
+        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+        .calc-btn-num { background: #334155; color: white; border: none; padding: 12px; font-size: 14px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .calc-btn-num:hover { background: #475569; }
+        .calc-btn-op { background: #f59e0b; color: white; border: none; padding: 12px; font-size: 14px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+
+        #result-view { display: none; padding: 35px; text-align: center; }
+        .score-card { background: #f8fafc; border: 2px solid #e2e8f0; padding: 25px; border-radius: 10px; margin: 15px 0; }
+        .score-number { font-size: 42px; font-weight: bold; color: #2563eb; margin: 8px 0; }
+    </style>
+
+    <style>
+        .pro-toolbar { display: flex; gap: 6px; justify-content: flex-end; margin-bottom: 12px; }
+        .pro-btn { padding: 4px 10px; font-size: 11px; font-weight: 600; color: #fff; background: #334155; border: none; border-radius: 4px; cursor: pointer; }
+        .pro-btn.primary { background: #0284c7; }
+        .matrix-drawer { background: #1e293b; border: 1px solid #334155; border-radius: 6px; padding: 12px; margin-bottom: 12px; }
+        .matrix-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(32px, 1fr)); gap: 6px; max-height: 160px; overflow-y: auto; margin-top: 8px; }
+        .m-cell { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; border-radius: 4px; cursor: pointer; background: #0f172a; color: #f8fafc; border: 1px solid #475569; }
+        .m-cell.answered { background: #15803d; border-color: #22c55e; }
+        .m-cell.flagged { background: #b45309; border-color: #f59e0b; }
+        .m-cell.active-q { border: 2px solid #38bdf8; transform: scale(1.05); }
+    </style>
+</head>
+<body>
+    <div style="max-width: 600px; margin: 10px auto; padding: 0 10px;">
+        <div class="pro-toolbar">
+            <button type="button" class="pro-btn" onclick="toggleMatrix()">🗂 Palette Grid</button>
+            <button type="button" class="pro-btn primary" onclick="toggleFullScreen()">🖥 Fullscreen</button>
+        </div>
+        <div id="matrix-drawer" class="matrix-drawer" style="display: none;">
+            <div style="font-size: 11px; font-weight: 600; color: #38bdf8; display: flex; justify-content: space-between;">
+                <span>Question Status Grid</span>
+                <span style="font-size: 10px; color: #94a3b8;">Green: Answered | Orange: Flagged</span>
+            </div>
+            <div id="matrix-grid" class="matrix-grid"></div>
+        </div>
+    </div>
+    <div class="exam-container"
+
+    <div class="exam-wrapper">
+        <div class="exam-header">
+            <h2 id="portal-title"><span>🇳🇬</span> Official CBT Examination Center</h2>
+            <div class="header-controls">
+                <button type="button" class="calc-btn" onclick="toggleCalculator()">🧮 Calculator</button>
+                <div class="timer-badge" id="timer-display">Time: --:--</div>
+            </div>
+        </div>
+
+        <div id="setup-view">
+            <h2 id="setup-heading">Select Your 4 Examination Subjects</h2>
+            <p style="color: #64748b; font-size: 13px; margin-bottom: 15px;">Use of English is compulsory. Please select exactly <strong>3 additional subjects</strong> matching your career path.</p>
+            
+            <div style="margin: 10px 0; text-align: left; background: #e2e8f0; padding: 10px; border-radius: 6px; font-weight: bold; font-size: 13px;">
+                <input type="checkbox" checked disabled> 1. Use of English (Compulsory across all careers)
+            </div>
+
+            <p style="text-align: left; font-size: 13px; font-weight: bold; color: #1e293b; margin-top: 15px;">Select 3 Additional Subjects:</p>
+            <div class="subject-grid" id="subject-selection-container"></div>
+
+            <p id="selection-error" style="color: #dc2626; font-size: 12px; font-weight: bold; margin-top: 8px; display: none;">You must select exactly 3 additional subjects (Total 4 subjects required).</p>
+
+            <button type="button" class="btn btn-submit" onclick="initializeExam()" style="width: 100%; padding: 12px; font-size: 15px; margin-top: 15px;">Start CBT Examination</button>
+        </div>
+
+        <div id="quiz-view">
+            <div class="exam-top-row">
+                <div class="question-meta" id="q-meta">Subject: English | Question 1</div>
+                <button type="button" class="flag-btn" id="flag-btn" onclick="toggleFlag()">🚩 Flag Question</button>
+            </div>
+            <div class="question-text" id="q-text">Loading question...</div>
+            
+            <ul class="options-container" id="options-container"></ul>
+
+            <div class="footer-nav">
+                <button type="button" class="btn" id="prev-btn" onclick="changeQuestion(-1)" style="background: #64748b;">Previous</button>
+                <button type="button" class="btn" id="next-btn" onclick="changeQuestion(1)">Next Question</button>
+            </div>
+        </div>
+
+        <div id="result-view">
+            <h2>Examination Submitted Successfully</h2>
+            <div class="score-card">
+                <h3>Final Score Report (Calculated across all 4 subjects)</h3>
+                <div class="score-number" id="final-score">0 / 400</div>
+                <p id="breakdown-text" style="font-size: 14px; color: #334155; line-height: 1.5;"></p>
+            </div>
+            <button type="button" class="btn" onclick="window.location.href='/dashboard.html'">Return to Dashboard</button>
+        </div>
+    </div>
+
+    <div id="calc-modal">
+        <input type="text" id="calc-screen" readonly value="0">
+        <div class="calc-grid">
+            <button type="button" class="calc-btn-op" onclick="calcClear()">C</button>
+            <button type="button" class="calc-btn-op" onclick="calcAppend('/')">/</button>
+            <button type="button" class="calc-btn-op" onclick="calcAppend('*')">*</button>
+            <button type="button" class="calc-btn-op" onclick="calcDelete()">⌫</button>
+            <button type="button" class="calc-btn-num" onclick="calcAppend('7')">7</button>
+            <button type="button" class="calc-btn-num" onclick="calcAppend('8')">8</button>
+            <button type="button" class="calc-btn-num" onclick="calcAppend('9')">9</button>
+            <button type="button" class="calc-btn-op" onclick="calcAppend('-')">-</button>
+            <button type="button" class="calc-btn-num" onclick="calcAppend('4')">4</button>
+            <button type="button" class="calc-btn-num" onclick="calcAppend('5')">5</button>
+            <button type="button" class="calc-btn-num" onclick="calcAppend('6')">6</button>
+            <button type="button" class="calc-btn-op" onclick="calcAppend('+')">+</button>
+            <button type="button" class="calc-btn-num" onclick="calcAppend('1')">1</button>
+            <button type="button" class="calc-btn-num" onclick="calcAppend('2')">2</button>
+            <button type="button" class="calc-btn-num" onclick="calcAppend('3')">3</button>
+            <button type="button" class="calc-btn-op" onclick="calcCompute()">=</button>
+            <button type="button" class="calc-btn-num" onclick="calcAppend('0')" style="grid-column: span 2;">0</button>
+            <button type="button" class="calc-btn-num" onclick="calcAppend('.')">.</button>
+            <button type="button" class="calc-btn-op" onclick="toggleCalculator()">✕</button>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const examType = urlParams.get('type') || 'JAMB';
+        document.getElementById('portal-title').innerHTML = `<span>🇳🇬</span> ${examType} 2026 Examination Center`;
+
+        const allSubjects = [
+            "Mathematics", "Physics", "Chemistry", "Biology", "Agricultural Science",
+            "Economics", "Government", "Literature-in-English", "CRS / Islamic Studies",
+            "Financial Accounting", "Commerce", "Geography", "History", "Civic Education",
+            "Computer Studies", "Fine Arts", "French", "Hausa / Igbo / Yoruba", "Music"
+        ];
+
+        const container = document.getElementById('subject-selection-container');
+        allSubjects.forEach(sub => {
+            container.innerHTML += `
+                <label class="subject-card">
+                    <input type="checkbox" name="sub" value="${sub}"> ${sub}
+                </label>`;
+        });
+
+        let selectedSubjects = ['Use of English'];
+        let activeQuestions = [];
+        let currentQIdx = 0;
+        let userAnswers = {};
+        let flaggedQuestions = {};
+        let timerInterval;
+        // JAMB: 2 hours (7200s), WAEC: 1 hour 30 mins (5400s)
+        let timeLeft = examType === 'JAMB' ? 7200 : 5400;
+
+        const masterBank = {
+            'Use of English': [
+                { q: "Choose the option nearest in meaning to the underlined word: Her remarks were *capricious*.", options: ["Consistent", "Unpredictable", "Logical", "Deliberate"], ans: 1 },
+                { q: "Identify the correct grammatical structure:", options: ["The committee have submitted its report.", "The committee has submitted their report.", "The committee has submitted its report.", "The committee have submitted their report."], ans: 2 },
+                { q: "Choose the antonym of the word 'Innocent':", options: ["Guilty", "Pure", "Clean", "Faultless"], ans: 0 }
+            ],
+            'Mathematics': [
+                { q: "Find the value of x if 3x - 5 = 10 + x", options: ["5.5", "7.5", "8.0", "6.5"], ans: 1 },
+                { q: "Calculate simple interest on N5,000 for 2 years at 5% per annum.", options: ["N250", "N500", "N750", "N1000"], ans: 1 }
+            ],
+            'Physics': [
+                { q: "Which of the following is a fundamental SI unit?", options: ["Newton", "Joule", "Kilogram", "Watt"], ans: 2 },
+                { q: "The instrument used to measure relative humidity is:", options: ["Hydrometer", "Hygrometer", "Barometer", "Manometer"], ans: 1 }
+            ],
+            'Chemistry': [
+                { q: "What is the chemical formula for rust?", options: ["Fe2O3.xH2O", "FeO", "Fe3O4", "Fe(OH)2"], ans: 0 },
+                { q: "Which gas turns acidified potassium dichromate solution green?", options: ["CO2", "SO2", "NH3", "HCl"], ans: 1 }
+            ],
+            'Biology': [
+                { q: "The powerhouse of the cell is the:", options: ["Nucleus", "Ribosome", "Mitochondrion", "Chloroplast"], ans: 2 }
+            ],
+            'Economics': [
+                { q: "Inflation caused by increase in production costs is:", options: ["Demand-pull", "Cost-push", "Hyperinflation", "Stagflation"], ans: 1 }
+            ],
+            'Government': [
+                { q: "Power shared between central government and federating units is:", options: ["Unitary", "Federal", "Confederal", "Monarchy"], ans: 1 }
+            ],
+            'Literature-in-English': [
+                { q: "A dramatic work ending in tragedy of the protagonist is a:", options: ["Comedy", "Tragedy", "Farce", "Melodrama"], ans: 1 }
+            ]
+        };
+
+        function initializeExam() {
+            const checkedBoxes = document.querySelectorAll('input[name="sub"]:checked');
+            let chosen = [];
+            checkedBoxes.forEach(cb => chosen.push(cb.value));
+
+            if (chosen.length !== 3) {
+                document.getElementById('selection-error').style.display = 'block';
+                return;
+            }
+
+            document.getElementById('selection-error').style.display = 'none';
+            selectedSubjects = ['Use of English', ...chosen];
+
+            // Official question counts: JAMB = 60 English + 40 per subject (180 total); WAEC = 50 per subject
+            const requiredCountPerSub = examType === 'JAMB' ? 40 : 50;
+            const englishCount = examType === 'JAMB' ? 60 : 50;
+
+            selectedSubjects.forEach((sub, sIdx) => {
+                let sourceList = masterBank[sub] || masterBank['Mathematics'];
+                let targetCount = sIdx === 0 ? englishCount : requiredCountPerSub;
+                
+                for (let i = 0; i < targetCount; i++) {
+                    let template = sourceList[i % sourceList.length];
+                    activeQuestions.push({
+                        subject: sub,
+                        q: `[${sub} - Q${i+1}] ${template.q}`,
+                        options: template.options,
+                        ans: template.ans
+                    });
+                }
+            });
+
+            document.getElementById('setup-view').style.display = 'none';
+            document.getElementById('quiz-view').style.display = 'block';
+
+            startTimer();
+            loadQuestion();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                let m = Math.floor(timeLeft / 60);
+                let s = timeLeft % 60;
+                document.getElementById('timer-display').innerText = `Time: ${m}:${s < 10 ? '0' : ''}${s}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitExam();
+                }
+                timeLeft--;
+            }, 1000);
+        }
+
+        function loadQuestion() {
+            const q = activeQuestions[currentQIdx];
+            document.getElementById('q-meta').innerText = `Subject: ${q.subject} | Question ${currentQIdx + 1} of ${activeQuestions.length}`;
+            document.getElementById('q-text').innerText = q.q;
+
+            const optList = document.getElementById('options-container');
+            optList.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const checked = userAnswers[currentQIdx] === idx ? 'checked' : '';
+                optList.innerHTML += `
+                    <li>
+                        <label>
+                            <input type="radio" name="examOpt" value="${idx}" ${checked} onclick="userAnswers[currentQIdx] = ${idx}">
+                            ${opt}
+                        </label>
+                    </li>`;
+            });
+
+            const flagBtn = document.getElementById('flag-btn');
+            if (flaggedQuestions[currentQIdx]) {
+                flagBtn.innerText = "🚩 Unflag Question";
+                flagBtn.style.background = "#dc2626";
+            } else {
+                flagBtn.innerText = "🚩 Flag Question";
+                flagBtn.style.background = "#f59e0b";
+            }
+
+            document.getElementById('prev-btn').style.display = currentQIdx > 0 ? 'block' : 'none';
+            document.getElementById('next-btn').innerText = currentQIdx === activeQuestions.length - 1 ? 'Submit Exam' : 'Next Question';
+            if (currentQIdx === activeQuestions.length - 1) {
+                document.getElementById('next-btn').className = 'btn btn-submit';
+            }
+        }
+
+        function toggleFlag() {
+            if (flaggedQuestions[currentQIdx]) delete flaggedQuestions[currentQIdx];
+            else flaggedQuestions[currentQIdx] = true;
+            loadQuestion();
+        }
+
+        function changeQuestion(direction) {
+            if (direction === 1 && currentQIdx < activeQuestions.length - 1) {
+                currentQIdx++;
+                loadQuestion();
+            } else if (direction === -1 && currentQIdx > 0) {
+                currentQIdx--;
+                loadQuestion();
+            } else if (direction === 1 && currentQIdx === activeQuestions.length - 1) {
+                submitExam();
+            }
+        }
+
+        function submitExam() {
+            clearInterval(timerInterval);
+            let correctCount = 0;
+            activeQuestions.forEach((q, idx) => {
+                if (userAnswers[idx] === q.ans) correctCount++;
+            });
+
+            const totalQ = activeQuestions.length;
+            const percentage = correctCount / totalQ;
+            const scaledScore = Math.round(percentage * 400);
+
+            let history = JSON.parse(localStorage.getItem('cbt_history') || '[]');
+            history.push({
+                date: new Date().toLocaleDateString(),
+                exam: examType,
+                subjects: selectedSubjects.join(', '),
+                score: `${scaledScore} / 400`
+            });
+            localStorage.setItem('cbt_history', JSON.stringify(history));
+
+            document.getElementById('quiz-view').style.display = 'none';
+            document.getElementById('result-view').style.display = 'block';
+            document.getElementById('final-score').innerText = `${scaledScore} / 400`;
+            document.getElementById('breakdown-text').innerText = `You successfully answered questions across your 4 chosen subjects (${selectedSubjects.join(', ')}). Total correct: ${correctCount}/${totalQ}. Score recorded in your dashboard log!`;
+        }
+
+        function toggleCalculator() {
+            let modal = document.getElementById('calc-modal');
+            modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+        }
+        function calcAppend(val) {
+            let screen = document.getElementById('calc-screen');
+            if (screen.value === '0' || screen.value === 'Error') screen.value = val;
+            else screen.value += val;
+        }
+        function calcClear() { document.getElementById('calc-screen').value = '0'; }
+        function calcDelete() {
+            let screen = document.getElementById('calc-screen');
+            screen.value = screen.value.length > 1 ? screen.value.slice(0, -1) : '0';
+        }
+        function calcCompute() {
+            let screen = document.getElementById('calc-screen');
+            try { screen.value = eval(screen.value); } catch (e) { screen.value = 'Error'; }
+        }
+    </script>
+
+<script>
+    function toggleMatrix() {
+        let drawer = document.getElementById('matrix-drawer');
+        if (!drawer) return;
+        drawer.style.display = drawer.style.display === 'none' ? 'block' : 'none';
+        if (drawer.style.display === 'block') renderMatrixCells();
+    }
+
+    function renderMatrixCells() {
+        let grid = document.getElementById('matrix-grid');
+        if (!grid || typeof activeQuestions === 'undefined') return;
+        grid.innerHTML = '';
+        
+        activeQuestions.forEach((q, idx) => {
+            let cell = document.createElement('div');
+            cell.className = 'm-cell';
+            cell.innerText = idx + 1;
+            
+            if (typeof userAnswers !== 'undefined' && userAnswers[idx] !== undefined) cell.classList.add('answered');
+            if (typeof flaggedQuestions !== 'undefined' && flaggedQuestions[idx]) cell.classList.add('flagged');
+            if (typeof currentQIdx !== 'undefined' && idx === currentQIdx) cell.classList.add('active-q');
+            
+            cell.onclick = () => {
+                currentQIdx = idx;
+                if (typeof loadQuestion === 'function') loadQuestion();
+                renderMatrixCells();
+            };
+            grid.appendChild(cell);
+        });
+    }
+
+    const origLoadQ = window.loadQuestion || function(){};
+    window.loadQuestion = function() {
+        origLoadQ();
+        let drawer = document.getElementById('matrix-drawer');
+        if (drawer && drawer.style.display === 'block') {
+            renderMatrixCells();
+        }
+    };
+
+    function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => console.log(err));
+        } else {
+            if (document.exitFullscreen) document.exitFullscreen();
+        }
+    }
+</script>
+</body>
+</html>
+
+
+

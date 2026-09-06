@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>2026 Unified UTME Syllabus Outline</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { min-height: 100vh; background-color: #0b132b; color: white; }
+        
+        nav {
+            background: rgba(10, 25, 47, 0.95);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #ffcc00;
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .logo-area { font-weight: bold; font-size: 18px; color: #ffcc00; }
+        .nav-links { display: flex; gap: 20px; align-items: center; }
+        .nav-links a { color: white; text-decoration: none; font-size: 14px; font-weight: 600; }
+        .nav-links a:hover { color: #ffcc00; }
+
+        .container { max-width: 900px; margin: 30px auto; padding: 20px; text-align: center; }
+        h1 { font-size: 28px; color: #ffcc00; margin-bottom: 8px; }
+        .subtitle { font-size: 14px; color: #cbd5e1; margin-bottom: 25px; }
+
+        .search-box {
+            width: 100%; padding: 12px 20px; font-size: 16px; border-radius: 6px;
+            border: 2px solid #334155; background: #1e293b; color: white; margin-bottom: 30px;
+            outline: none; transition: border-color 0.2s;
+        }
+        .search-box:focus { border-color: #ffcc00; }
+
+        .syllabus-grid { display: flex; flex-direction: column; gap: 15px; text-align: left; }
+        .syllabus-card {
+            background: #ffffff; color: #1e293b; padding: 20px; border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); border-left: 6px solid #0d9488;
+        }
+        .syllabus-card h3 { color: #0d9488; margin-bottom: 10px; font-size: 18px; }
+        .topics-list { font-size: 13px; color: #334155; line-height: 1.6; padding-left: 20px; }
+        .topics-list li { margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo-area">🇳🇬 OFFICIAL CBT PORTAL</div>
+        <div class="nav-links">
+            <a href="/dashboard.html">Dashboard</a>
+            <a href="/brochure.html">JAMB Brochure</a>
+            <a href="/syllabus.html" style="color: #ffcc00;">JAMB Syllabus</a>
+            <a href="/login.html" style="color: #ff4d4d;">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Comprehensive 2026 UTME Subject Syllabus</h1>
+        <p class="subtitle">Review recommended examination topics, core objectives, and guidelines set by JAMB for all subjects.</p>
+
+        <input type="text" id="syllabusSearch" class="search-box" placeholder="Search subject (e.g., Mathematics, Biology, Economics, Government)..." onkeyup="filterSyllabus()">
+
+        <div class="syllabus-grid" id="syllabusList">
+            <div class="syllabus-card" data-name="use of english communication comprehension grammar">
+                <h3>Use of English</h3>
+                <ul class="topics-list">
+                    <li><strong>Comprehension & Summary:</strong> Reading for implied meaning, critical analysis, and vocabulary in context.</li>
+                    <li><strong>Lexis & Structure:</strong> Synonyms, antonyms, idioms, clause structures, agreement, and grammatical precision.</li>
+                    <li><strong>Oral Forms:</strong> Vowels, consonants, rhymes, word stress, and intonation patterns.</li>
+                </ul>
+            </div>
+
+            <div class="syllabus-card" data-name="mathematics algebra geometry calculus statistics">
+                <h3>Mathematics</h3>
+                <ul class="topics-list">
+                    <li><strong>Number & Numeration:</strong> Indices, logarithms, standard form, sets, and sequences.</li>
+                    <li><strong>Algebra:</strong> Polynomials, quadratic equations, inequalities, matrices, and determinants.</li>
+                    <li><strong>Geometry & Trigonometry:</strong> Euclidean geometry, mensuration, bearings, and trigonometric ratios/identities.</li>
+                    <li><strong>Calculus & Statistics:</strong> Differentiation, integration, measures of dispersion, and probability.</li>
+                </ul>
+            </div>
+
+            <div class="syllabus-card" data-name="physics mechanics waves thermodynamics electromagnetism">
+                <h3>Physics</h3>
+                <ul class="topics-list">
+                    <li><strong>Interactions of Matter:</strong> Kinematics, dynamics, work, energy, power, elasticity, and fluids.</li>
+                    <li><strong>Waves:</strong> Sound waves, light waves, electromagnetic spectrum, and optical instruments.</li>
+                    <li><strong>Thermodynamics & Fields:</strong> Heat transfer, electrostatics, current electricity, magnetism, and electromagnetic induction.</li>
+                </ul>
+            </div>
+
+            <div class="syllabus-card" data-name="chemistry atoms stoichiometry organic physical inorganic">
+                <h3>Chemistry</h3>
+                <ul class="topics-list">
+                    <li><strong>Physical Chemistry:</strong> Stoichiometry, atomic structure, states of matter, energetic, and chemical equilibria.</li>
+                    <li><strong>Inorganic Chemistry:</strong> Periodic table properties, metals, non-metals, and qualitative analysis.</li>
+                    <li><strong>Organic Chemistry:</strong> Functional groups, hydrocarbons, alkanols, alkanoates, polymers, and biochemistry.</li>
+                </ul>
+            </div>
+
+            <div class="syllabus-card" data-name="biology cell genetics ecology anatomy physiology">
+                <h3>Biology</h3>
+                <ul class="topics-list">
+                    <li><strong>Variety of Organisms & Cell Biology:</strong> Cell structure, organization, movement, and biological molecules.</li>
+                    <li><strong>Plant & Animal Physiology:</strong> Nutrition, respiration, transport systems, excretion, and regulation.</li>
+                    <li><strong>Genetics & Ecology:</strong> Heredity, variation, evolution, trophic levels, nutrient cycles, and environmental pollution.</li>
+                </ul>
+            </div>
+
+            <div class="syllabus-card" data-name="economics market consumer theory monetary fiscal policy macroeconomics">
+                <h3>Economics</h3>
+                <ul class="topics-list">
+                    <li><strong>Microeconomics:</strong> Utility theory, consumer behavior, market structures, price determination, and demand/supply dynamics.</li>
+                    <li><strong>Macroeconomics:</strong> National income accounting, inflation, unemployment, public finance, monetary policy, and international trade.</li>
+                </ul>
+            </div>
+
+            <div class="syllabus-card" data-name="government political science democracy constitution international relations">
+                <h3>Government</h3>
+                <ul class="topics-list">
+                    <li><strong>Political Concepts & Systems:</strong> Power, authority, legitimacy, democracy, monarchy, constitutions, and federalism.</li>
+                    <li><strong>Nigerian Government History:</strong> Pre-colonial systems, constitutional developments, military rule, public service, and foreign policy.</li>
+                </ul>
+            </div>
+
+            <div class="syllabus-card" data-name="literature drama poetry prose literary appreciation">
+                <h3>Literature-in-English</h3>
+                <ul class="topics-list">
+                    <li><strong>Drama & Prose:</strong> African and non-African plays/novels, plot development, characterization, themes, and narrative techniques.</li>
+                    <li><strong>Poetry & Literary Devices:</strong> Figures of speech, rhyme schemes, tone, mood, and analysis of unseen poems.</li>
+                </ul>
+            </div>
+
+            <div class="syllabus-card" data-name="crs christian religious studies bible theology">
+                <h3>Christian Religious Studies (CRS)</h3>
+                <ul class="topics-list">
+                    <li><strong>Themes from Old Testament:</strong> Creation, leadership of Moses, Joshua, the monarchy, and prophetic messages.</li>
+                    <li><strong>Themes from New Testament:</strong> Birth and ministry of Jesus Christ, passion, resurrection, and the early apostolic church.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function filterSyllabus() {
+            let input = document.getElementById('syllabusSearch').value.toLowerCase();
+            let cards = document.getElementsByClassName('syllabus-card');
+            
+            for (let i = 0; i < cards.length; i++) {
+                let name = cards[i].getAttribute('data-name');
+                let text = cards[i].innerText.toLowerCase();
+                if (name.includes(input) || text.includes(input)) {
+                    cards[i].style.display = "block";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
+

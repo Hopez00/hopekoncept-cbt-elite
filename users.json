@@ -1,0 +1,17 @@
+[
+  {
+    "email": "hoperobert000@gmail.com",
+    "password": "$2b$10$eQxOEOMrYpcRZWZ71MlzOuqJIfcv0JFxKWAeqGmBYUH/1lsFMap/u",
+    "is_verified": true
+  },
+  {
+    "email": "hopekoncept@gmail.com",
+    "password": "$2b$10$dlHqJthXy.tld.n/Fy58ceSty87B0Up6ZMu0rmUg8pRjFzymcZvqa",
+    "is_verified": true
+  },
+  {
+    "email": "tandorsglobalservices@gmail.com",
+    "password": "$2b$10$SZW7BeO8tm0NPBm1NZMgF.KIzpMuf5SPMhvZxaTjlUgfMB3mkcDFa",
+    "is_verified": true
+  }
+]
