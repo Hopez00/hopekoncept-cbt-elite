@@ -215,7 +215,7 @@
                     document.getElementById('reg-step-1').style.display = 'none';
                     document.getElementById('reg-step-2').style.display = 'block';
                 } else {
-                    alert(data.message || 'Registration failed.');
+                    alert('Server Message: ' + (data.message || 'Unknown error'));
                 }
             } catch (e) {
                 alert('Server connection error.');
