@@ -26,34 +26,32 @@ const resetRequests = {};
 app.post('/api/register', async (req, res) => {
     const { name, email, pass } = req.body;
     if (!email || !pass) {
-        return res.json({ success: false, message: 'All fields are required.' });
+        return res.json({ success: false, message: "All fields are required." });
     }
 
     if (registeredUsers[email]) {
-        return res.json({ success: false, message: 'Email is already registered. Please sign in or use Forgot Password.' });
+        return res.json({ success: false, message: "Email is already registered. Please sign in or use Forgot Password." });
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     pendingVerifications[otp] = { name, email, pass, timestamp: Date.now() };
 
-    console.log("========================================");
+    console.log("================================");
     console.log(`[REGISTRATION OTP] Code for ${email}: ${otp}`);
-    console.log("========================================");
+    console.log("================================");
 
-    
-  try {
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER || "your-email@gmail.com",
-      to: email,
-      subject: "Hopekoncept CBT Elite - Verification Code",
-      text: "Your verification code is: " + otp
-    });
-    res.json({ success: true, message: "Verification code sent to your email inbox!" });
-  } catch (err) {
-    console.error("Mail error:", err);
-    res.status(500).json({ success: false, message: "Failed to send email." });
-  }
-
+    try {
+        await transporter.sendMail({
+            from: process.env.EMAIL_USER || "your-email@gmail.com",
+            to: email,
+            subject: "Hopekoncept CBT Elite - Verification Code",
+            text: "Your verification code is: " + otp
+        });
+        res.json({ success: true, message: "Verification code sent to your email inbox!" });
+    } catch (err) {
+        console.error("Mail error:", err);
+        res.status(500).json({ success: false, message: "Failed to send email." });
+    }
 });
 
 // Verify OTP Route
