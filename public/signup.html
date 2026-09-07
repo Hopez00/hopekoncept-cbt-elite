@@ -211,7 +211,7 @@
                 });
                 let data = await res.json();
                 if (data.success) {
-                    alert('Verification Code Generated: ' + data.otp);
+                    alert('Verification code sent to your email inbox! Please check your mail.');
                     document.getElementById('reg-step-1').style.display = 'none';
                     document.getElementById('reg-step-2').style.display = 'block';
                 } else {
