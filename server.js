@@ -23,7 +23,7 @@ const registeredUsers = {};
 const resetRequests = {};
 
 // Register Route with Duplicate Detection
-app.post('/api/register', (req, res) => {
+app.post('/api/register', async (req, res) => {
     const { name, email, pass } = req.body;
     if (!email || !pass) {
         return res.json({ success: false, message: 'All fields are required.' });
