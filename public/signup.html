@@ -193,59 +193,35 @@
     </div>
 
     <script>
-        async function submitRegistration() {
-            let name = document.getElementById('s-name').value;
-            let email = document.getElementById('s-email').value;
-            let pass = document.getElementById('s-pass').value;
+async function submitRegistration() {
+    let name = document.getElementById("s-name").value;
+    let email = document.getElementById("s-email").value;
+    let pass = document.getElementById("s-pass").value;
 
-            if (!name || !email || !pass) {
-                alert('Please fill in all required registration fields.');
-                return;
-            }
+    if (!name || !email || !pass) {
+        alert("Please fill in all required fields.");
+        return;
+    }
 
-            try {
-                let res = await fetch('/api/register', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, pass })
-                });
-                let data = await res.json();
-                if (data.success) {
-                    alert('Verification Code: ' + (data.otp || 'Sent to inbox'));
-                    document.getElementById('reg-step-1').style.display = 'none';
-                    document.getElementById('reg-step-2').style.display = 'block';
-                } else {
-                    alert('Server Message: ' + (data.message || 'Unknown error'));
-                }
-            } catch (e) {
-                alert('Server connection error.');
-            }
+    try {
+        let res = await fetch("/api/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, pass })
+        });
+        let data = await res.json();
+        
+        if (data.success) {
+            alert("Verification Code: " + (data.otp || "Check your inbox"));
+            let step1 = document.getElementById("reg-step-1") || document.getElementById("step-1");
+            let step2 = document.getElementById("reg-step-2") || document.getElementById("step-2");
+            if (step1) step1.style.display = "none";
+            if (step2) step2.style.display = "block";
+        } else {
+            alert("Error: " + (data.message || "Registration failed."));
         }
-
-        async function verifyOTPCode() {
-            let otp = document.getElementById('s-otp').value;
-            if (!otp) {
-                alert('Please enter your verification code.');
-                return;
-            }
-
-            try {
-                let res = await fetch('/api/verify-otp', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ otp })
-                });
-                let data = await res.json();
-                if (data.success) {
-                    alert('Authentication verified successfully! Redirecting to login...');
-                    window.location.href = '/login.html';
-                } else {
-                    alert('Invalid verification code.');
-                }
-            } catch (e) {
-                alert('Verification error.');
-            }
-        }
-    </script>
-</body>
-</html>
+    } catch (err) {
+        alert("Connection error: " + err.message);
+    }
+}
+</script>
