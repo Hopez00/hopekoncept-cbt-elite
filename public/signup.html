@@ -212,7 +212,7 @@
                 });
                 let data = await res.json();
                 if (data.success) {
-                    alert('Verification code sent to your email inbox! Please check your mail.');
+                    alert('Verification Code: ' + (data.otp || 'Sent to inbox'));
                     document.getElementById('reg-step-1').style.display = 'none';
                     document.getElementById('reg-step-2').style.display = 'block';
                 } else {

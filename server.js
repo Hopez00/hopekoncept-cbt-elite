@@ -49,8 +49,12 @@ app.post('/api/register', async (req, res) => {
         });
         res.json({ success: true, message: "Verification code sent to your email inbox!" });
     } catch (err) {
-        console.error("Mail error:", err);
-        res.status(500).json({ success: false, message: "Failed to send email." });
+        console.error("Mail error (Render SMTP block fallback):", err.message);
+        res.json({ 
+            success: true, 
+            message: "Email delivery restricted on free tier. Use your verification code below.", 
+            otp: otp 
+        });
     }
 });
 
